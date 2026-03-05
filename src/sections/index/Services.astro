@@ -1,0 +1,173 @@
+---
+import ServiceCard from "../../components/ServiceCard.astro";
+import GradientText from "../../components/GradientText.astro";
+import { services } from "../../data/services";
+import { Image } from "astro:assets";
+import Logo from "../../assets/svg/codezone-logo-color.svg";
+import Separator from "../../components/Separator.astro";
+---
+
+<section
+  id="services"
+  class="services-section flex flex-col items-center justify-center"
+>
+  <div class="flex flex-col items-center justify-center w-full">
+    <Image
+      src={Logo}
+      alt="Logo de CodeZone"
+      width={375}
+      height={54}
+      widths={[375, 750, 1125]}
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+      loading="lazy"
+      decoding="async"
+      class="w-43 md:w-93.75 h-auto aspect-auto"
+    />
+    <GradientText
+      as="h2"
+      gradient="purple-cyan"
+      className="font-medium text-center text-[40px] md:text-6xl lg:text-[64px]"
+      style="letter-spacing: 1px;"
+    >
+      Tech Your Vibes
+    </GradientText>
+    <Separator wormDuration={0.08} loopInterval={5} className="w-full -mt-5" />
+  </div>
+  <div
+    class="flex flex-col items-center w-full max-w-2xl mx-auto mt-0 md:-mt-8 lg:-mt-15"
+  >
+    <div class="flex flex-col max-w-126 min-w-85.5 w-full px-4">
+      <p class="paragraph-1 text-light text-center mb-8">
+        En Codezone convertimos lo que tu negocio busca y necesita en tecnología
+        a medida, respetando su esencia y maximizando su valor.
+      </p>
+      <p class="paragraph-2 text-light text-center mb-8">
+        Ayudamos a marcas y empresas a crear productos inspiradores, confiables
+        y rentables.
+      </p>
+    </div>
+  </div>
+
+  <div
+    class={`services-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-center w-full mx-auto shift-down-15`}
+  >
+    {
+      services.map((service, index) => (
+        <div
+          class={
+            index === 2
+              ? "flex h-full md:col-span-2 md:justify-self-center md:w-[calc(50%-1.375rem)] xl:order-2 xl:col-span-1 xl:justify-self-auto xl:w-auto"
+              : index === 1
+                ? "flex h-full shift-up-10"
+                : "flex h-full w-full"
+          }
+          data-card-index={index}
+        >
+          <ServiceCard
+            title={service.title}
+            description={service.description}
+            image={service.image}
+            video={service.video}
+            cta={service.ctaText}
+            ctaHref={service.ctaHref}
+            className="service-card"
+          />
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  /* Performance optimizations */
+  .services-section img,
+  .paragraph-1,
+  .paragraph-2 {
+    will-change: transform, opacity; /* filter eliminado: blur ya no se anima */
+  }
+  .service-card {
+    will-change: transform, opacity;
+  }
+  .services-section :global(.word-mask-inner) {
+    will-change: transform, opacity;
+  }
+  .service-card-center {
+    grid-column: auto;
+  }
+
+  /* Make grid rows equal height so cards stretch to the same size */
+  .services-grid {
+    grid-auto-rows: 1fr;
+    max-width: var(--width-max-content);
+  }
+
+  #services {
+    padding: 4rem 0 2rem;
+    position: relative;
+    background-image:
+      radial-gradient(
+        ellipse 70% 50% at 50% 50%,
+        rgba(200, 0, 222, 0.45) 0%,
+        rgba(200, 0, 222, 0.1) 45%,
+        rgba(2, 6, 24, 0) 70%
+      ),
+      var(--cz-background);
+    background-position: top center;
+    background-size: min(100%, 1514px) 100%;
+    background-repeat: no-repeat;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    #services {
+      background-image:
+        radial-gradient(
+          ellipse 80% 30% at 50% 30%,
+          rgba(200, 0, 222, 0.45) 0%,
+          rgba(200, 0, 222, 0.1) 45%,
+          rgba(2, 6, 24, 0) 70%
+        ),
+        var(--cz-background);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .shift-up-10 {
+      transform: translateY(15%);
+      z-index: var(--z-content);
+    }
+
+    .shift-down-15 {
+      transform: translateY(-15%);
+      z-index: var(--z-content);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .services-section {
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  /* Accessibility: Show content immediately if prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    .services-section img,
+    .services-section h2,
+    .services-section p,
+    .service-card {
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+    }
+  }
+</style>
+<!-- 
+<script>
+  document.addEventListener("astro:page-load", async () => {
+    if (window.matchMedia("(max-width: 768px)").matches) return;
+    const { animateServicesSection } =
+      await import("../utils/animations/services.animation");
+    animateServicesSection();
+  });
+</script> -->

@@ -1,0 +1,81 @@
+---
+import { Image } from "astro:assets";
+import logo from "../assets/svg/cz-logo-colors.svg";
+---
+
+<footer class="footer-section max-w-(--width-max-content) mx-auto px-4 md:px-6 lg:px-8 mt-40 ">
+  <div class="footer-container flex flex-col items-center justify-center gap-5">
+    <div class="w-35.25 h-17.75 lg:w-60.5 lg:h-30.5">
+        <Image
+          src={logo}
+          alt="Logo de CodeZone"
+          width="242"
+          height="122"
+          loading="lazy"
+          decoding="async"
+          class="w-full h-full object-contain"
+        />
+    </div>
+    <p class="footer-copyright font-light text-center">
+      &copy; {new Date().getFullYear()} Copyright <a href="https://www.codezone.es" class="footer-link">www.codezone.es</a>
+      <br />
+      Contacto: Telf:<a href="tel:+34691019753" class="footer-link">
+        +34 691 019 753</a
+      > - Mail: <a href="mailto:info@codezone.es" class="footer-link"
+        >info@codezone.es</a
+      >
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer-section {
+    background-image:
+      radial-gradient(
+        ellipse 60% 120% at 50% 95%,
+        rgba(200, 0, 222, 0.45) 0%,
+        rgba(200, 0, 222, 0.1) 45%,
+        rgba(2, 6, 24, 0) 70%
+      ),
+      var(--cz-background);
+    background-position: bottom center;
+  }
+
+  @media (max-width: 768px) {
+    .footer-section {
+      background-image:
+        radial-gradient(
+          ellipse 120% 70% at 50% 90%,
+          rgba(200, 0, 222, 0.45) 0%,
+          rgba(200, 0, 222, 0.1) 45%,
+          rgba(2, 6, 24, 0) 70%
+        ),
+        var(--cz-background);
+    }
+  }
+
+  .footer-tagline {
+    color: var(--cyan-300);
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+
+  .footer-link {
+    color: var(--cyan-300);
+    text-decoration: none;
+    font-size: medium;
+    letter-spacing: 1px;
+    transition: all var(--transition-slow);
+    border-bottom: 1px solid transparent;
+  }
+
+  .footer-link:hover {
+    color: var(--color-fuchsia-600);
+    text-decoration: none;
+  }
+
+  .footer-copyright {
+    max-width: 600px;
+    font-size: clamp(0.875rem, 0.7979rem + 0.3425vw, 1.125rem);
+  }
+</style>

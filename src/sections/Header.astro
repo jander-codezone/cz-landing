@@ -1,0 +1,247 @@
+---
+import Button from "../components/ui/Button.astro";
+import { mainNavigation } from "../data/navigation";
+import MobileMenu from "../components/MobileMenu.astro";
+import { Image } from "astro:assets";
+import Logo from "../assets/svg/codezone-logo-color.svg";
+
+// const isHome = Astro.url.pathname === "/" || Astro.url.pathname === "";
+---
+
+<header
+  class="fixed top-0 px-2 left-0 right-0 z-(--z-header) max-w-(--width-max-content) mx-auto"
+  style="--header-height:72px"
+>
+  <!-- <div
+    class={`container header-container h-14 md:h-18 max-w-(--width-max-content) mx-auto mt-4 px-4 flex justify-between items-center rounded-full glass-gradient-border xl:p-4 ${isHome ? "header-initial-hidden" : ""}`}
+  > -->
+  <div
+    class="container header-container h-14 md:h-18 max-w-(--width-max-content) mx-auto mt-4 px-4 flex justify-between items-center rounded-full glass-gradient-border xl:p-4"
+  >
+    <a class="brand" href="/#hero">
+      <Image
+        src={Logo}
+        alt="Logo de CodeZone - Ir a inicio"
+        width={180}
+        height={26}
+        widths={[360, 640, 750, 1080, 1280, 1440, 1920, 2560]}
+        sizes="(max-width: 768px) 100vw, 609px"
+        priority
+        decoding="async"
+        class="w-35 h-6.5 block"
+      />
+    </a>
+
+    <nav
+      class="topnav desktop-nav text-neutral-50 text-lg font-medium"
+      aria-label="Main navigation"
+      data-animate="header-nav"
+    >
+      <ul class="flex gap-6 blur-menu">
+        {
+          mainNavigation.map((item) => {
+            const sectionId = item.href.includes("#")
+              ? item.href.split("#")[1]
+              : item.href;
+
+            return (
+              <li>
+                <a
+                  href={item.href}
+                  data-nav-link
+                  data-section={sectionId}
+                  class={`nav-link hover:text-cyan-300 backdrop-blur-none rounded-md ${
+                    item.isActive ? "text-cyan-300" : ""
+                  }`}
+                  aria-current={item.isActive ? "page" : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+
+    <div class="desktop-cta">
+      <Button
+        href="/#contact-separator"
+        variant="outline"
+        size="small"
+        icon='images/svg/icon-arrow.svg'>Contacto</Button
+      >
+    </div>
+
+    <MobileMenu navItems={mainNavigation} />
+  </div>
+</header>
+
+<script>
+  import {
+    initialize,
+    handleNavigationClick,
+    handleInitialHash,
+    getActiveHref,
+    setActiveNavHref,
+  } from "../utils/navigation/navigation-manager";
+  // import { initHeroAnimations } from "../utils/animations/hero-animations";
+
+  document.addEventListener("astro:page-load", () => {
+    // document.fonts.ready.then(() => initHeroAnimations());
+
+    handleInitialHash().then(() => {
+      const currentPath = window.location.pathname;
+
+      if (!getActiveHref() && currentPath && currentPath !== "/") {
+        setActiveNavHref(currentPath);
+      }
+    });
+
+    const desktopLinks = Array.from(
+      document.querySelectorAll(
+        '.desktop-nav a[href^="/"], .desktop-nav a[href^="#"]',
+      ),
+    ) as HTMLElement[];
+
+    const mobileLinks = Array.from(
+      document.querySelectorAll(".mobilemenu-item"),
+    ) as HTMLElement[];
+
+    initialize([...desktopLinks, ...mobileLinks]);
+
+    const smoothScrollLinks = Array.from(
+      document.querySelectorAll(
+        '.desktop-nav a, .desktop-cta a, .brand, a[href^="#"], a[href^="/#"]',
+      ),
+    ).filter(
+      (link) => !link.classList.contains("mobilemenu-item"),
+    ) as HTMLElement[];
+
+    smoothScrollLinks.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        const href = link.getAttribute("href");
+        if (!href) return;
+
+        // Don't intercept external links
+        if (!href.startsWith("/") && !href.startsWith("#")) return;
+
+        handleNavigationClick(e, href);
+      });
+    });
+  });
+</script>
+
+<style>
+  .header-container {
+    will-change: transform, opacity;
+    z-index: 9999;
+  }
+
+  .header-initial-hidden {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  /* .header-container {
+    animation: hero-fallback-reveal 0ms 3000ms forwards;
+  } */
+
+  .glass-gradient-border {
+    position: relative;
+    isolation: isolate;
+    background-color: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 10;
+  }
+
+  .glass-gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    padding: 2px;
+    border-radius: inherit;
+    background: linear-gradient(360deg, var(--fuchsia-600), var(--cyan-300));
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .desktop-nav,
+  .desktop-cta {
+    display: none;
+  }
+
+  .brand {
+    display: inline-block;
+    line-height: 0;
+  }
+
+  .nav-link[aria-current="page"] {
+    color: var(--cyan-300);
+  }
+
+  .desktop-nav a,
+  .desktop-cta .btn {
+    font-size: 18px;
+    transition: all var(--transition-base);
+  }
+
+  .nav-link {
+    position: relative;
+    color: var(--neutral-100);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    display: inline-block;
+    filter: blur(0);
+    transition:
+      all var(--transition-base),
+      filter var(--transition-base),
+      opacity var(--transition-base);
+  }
+
+  .blur-menu:has(.nav-link:hover) .nav-link:not(:hover) {
+    opacity: 0.6;
+    filter: blur(1.2px);
+  }
+  .nav-link:hover {
+    color: var(--cyan-300);
+    filter: blur(0);
+  }
+
+  .nav-link:focus-visible {
+    outline: 2px solid var(--cyan-300);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+  }
+
+  @media (min-width: 1024px) {
+    .desktop-nav,
+    .desktop-cta {
+      display: block;
+    }
+
+    .brand img {
+      width: 180px;
+      height: auto;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .header-initial-hidden {
+      opacity: 1;
+      transform: none;
+    }
+    .header-container {
+      animation: none;
+    }
+  }
+</style>

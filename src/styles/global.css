@@ -1,0 +1,248 @@
+@import "tailwindcss";
+
+/* ============================================
+   FONTS
+   ============================================ */
+
+@font-face {
+  font-display: swap;
+  font-family: 'Funnel Display';
+  font-style: normal;
+  font-weight: 300;
+  src: url('/fonts/funnel-display-v3-latin-300.woff2') format('woff2');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Funnel Display';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/funnel-display-v3-latin-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Funnel Display';
+  font-style: normal;
+  font-weight: 500;
+  src: url('/fonts/funnel-display-v3-latin-500.woff2') format('woff2');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Funnel Display';
+  font-style: normal;
+  font-weight: 600;
+  src: url('/fonts/funnel-display-v3-latin-600.woff2') format('woff2');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Funnel Display';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/funnel-display-v3-latin-700.woff2') format('woff2');
+}
+
+/* ============================================
+   TAILWIND THEME
+   ============================================ */
+
+@theme {
+  --font-sans: "Funnel Display", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Funnel Display", sans-serif;
+
+  --text-card: clamp(0.875rem, 0.8462rem + 0.1282vw, 1rem);
+  --text-subtitle: clamp(1.125rem, 1.0094rem + 0.5137vw, 1.5rem);
+}
+
+/* ============================================
+   CSS CUSTOM PROPERTIES
+   ============================================ */
+
+:root {
+  /* Colors */
+  --primary-blue-dark: #121D46;
+  --primary-blue: #000c23;
+  --secondary-blue: #0e3261;
+  --light-gray: #FCFCFC;
+  --cyan-300: #53EAFD;
+  --fuchsia-600: #C800DE;
+  --neutral-100: #FAFAFA;
+  --neutral-50: #F5F5F5;
+  --cz-dark-base: #020618;
+  --cz-border-color: #0C2939;
+
+  /* Gradients */
+  --cz-default-gradient: linear-gradient(90deg, #C800DE 0%, #53EAFD 100%);
+  --cz-border-gradient: linear-gradient(90deg,
+      #c800de 10%,
+      #53eafd 50%,
+      #c800de 90%);
+  --cz-background: linear-gradient(rgba(255, 255, 255, .05) 0.5px,
+      transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .05) 1px,
+      transparent 1px);
+
+  /* Layout */
+  --width-max-content: 1528px;
+  --header-height: 72px;
+
+  /* Spacing */
+  --spacing-xs: 0.5rem;   /* 8px */
+  --spacing-sm: 1rem;     /* 16px */
+  --spacing-md: 1.5rem;   /* 24px */
+  --spacing-lg: 2rem;     /* 32px */
+  --spacing-xl: 3rem;     /* 48px */
+  --spacing-2xl: 4rem;    /* 64px */
+  --spacing-3xl: 6rem;    /* 96px */
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.25);
+  --shadow-glow: 0 0 15px rgba(83, 234, 253, 0.75);
+  --shadow-glow-purple: 0 0 15px rgba(200, 0, 222, 0.75);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 300ms ease-in-out;
+  --transition-slow: 600ms ease;
+
+  /* Z-index layers */
+  --z-base: 1;
+  --z-content: 10;
+  --z-header: 50;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal: 400;
+  --z-popover: 500;
+  --z-tooltip: 600;
+  --z-mobile-menu: 9998;
+  --z-mobile-burger: 9999;
+  --z-preloader: 10000;
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--cyan-300);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  outline: 2px solid var(--cyan-300);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+p,
+a {
+  font-size: clamp(0.9375rem, 0.8797rem + 0.2568vw, 1.125rem);
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+p,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+a,
+button {
+  text-wrap: pretty;
+}
+
+
+/* ============================================
+   BROWSER ENHANCEMENTS
+   ============================================ */
+
+::selection {
+  background: var(--cyan-300);
+  color: var(--primary-blue);
+}
+
+::-moz-selection {
+  background: var(--cyan-300);
+  color: var(--primary-blue);
+}
+
+input,
+button,
+textarea,
+select {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* ============================================
+   UTILITIES
+   ============================================ */
+
+.border-gradient-cz {
+  position: relative;
+  background: transparent;
+  background-image: linear-gradient(var(--primary-blue), var(--primary-blue)),
+    var(--cz-default-gradient);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 2px solid transparent;
+}
+
+.outer-glow-fx {
+  box-shadow: 0px 0px 0px 0px #02061866;
+  transition: all 600ms ease-out;
+}
+
+.outer-glow-fx:hover {
+  box-shadow: 0px 15px 25px 0px #02061866;
+  border-color: rgba(83, 233, 253, 0.3);
+  transition: all 300ms ease-out;
+}

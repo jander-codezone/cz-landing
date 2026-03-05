@@ -1,0 +1,111 @@
+---
+import FormInput from "../components/FormInput.astro";
+import Button from "../components/Button.astro";
+
+import { actions } from "astro:actions";
+
+const formFields = [
+    {
+        name: "name",
+        type: "text",
+        label: "Nombre:",
+        placeholder: "Tu nombre y apellidos",
+        // required: true,
+    },
+    {
+        name: "email",
+        type: "email",
+        label: "Email:",
+        placeholder: "ejemplo: tu.nombre@example.com",
+        // required: true,
+    },
+    {
+        name: "phone",
+        type: "tel",
+        label: "Teléfono:",
+        placeholder: "Ejemplo: +34681019753",
+        // required: true,
+    },
+    {
+        name: "message",
+        type: "textarea",
+        label: "Mensaje:",
+        placeholder: "Déjanos un mensaje",
+        required: false,
+    },
+];
+---
+
+<div
+    id="contact-form"
+    class="form-contact border rounded-3xl md:rounded-4xl p-4 sm:p-6 md:p-8 gap-4 md:gap-6 lg:gap-8"
+>
+    <h3 class="text-cyan-400 text-center font-semibold tracking-wide mb-6">
+        FORMULARIO DE CONTACTO
+    </h3>
+
+    <form
+        action={actions.sendMail}
+        method="post"
+        class="flex flex-col gap-4"
+        autocomplete="off"
+    >
+        {
+            formFields.map((field) => (
+                <div>
+                    <FormInput
+                        type={field.type as any}
+                        name={field.name}
+                        label={field.label}
+                        placeholder={field.placeholder}
+                    />
+                    <span
+                        id={`error-${field.name}`}
+                        class="text-red-400 text-sm mt-1 block"
+                        aria-live="polite"
+                    />
+                </div>
+            ))
+        }
+
+        <div id="form-message" class="hidden" role="alert" aria-live="polite">
+        </div>
+        <Button
+            type="submit"
+            variant="solid"
+            size="medium"
+            icon="icon-arrow.svg"
+        >
+            Enviar
+        </Button>
+    </form>
+</div>
+
+<style>
+    .form-contact {
+        display: flex;
+        flex-direction: column;
+        background: transparent;
+        background-image:
+            linear-gradient(
+                180deg,
+                var(--primary-blue) 0%,
+                var(--primary-blue) 50%
+            ),
+            linear-gradient(90deg, var(--fuchsia-600) 0%, var(--cyan-300) 100%);
+        background-clip: padding-box, border-box;
+        background-origin: border-box;
+        background-position: center left;
+        background-size: 200% 200%;
+        border: 2px solid transparent;
+        transition: all var(--transition-slow);
+    }
+</style>
+
+<script>
+    import { setupFormValidation } from "../utils/validation";
+
+    document.addEventListener("astro:page-load", async () => {
+        setupFormValidation();
+    });
+</script>

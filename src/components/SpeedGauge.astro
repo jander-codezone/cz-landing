@@ -1,0 +1,423 @@
+<!-- ---
+interface Props {
+  maxSpeed?: number;
+  label?: string;
+  title?: string;
+  tooltipText?: string;
+  tooltipIcon?: string;
+  gaugeImage?: string;
+  needleImage?: string;
+  animationDuration?: number;
+}
+
+const {
+  maxSpeed = 90,
+  label = "PSI",
+  title = "Alto rendimiento y velocidad",
+  tooltipText = "Una puntuación alta en Google's PageSpeed Insights no es solo un número; es una mejor experiencia de usuario y un mejor posicionamiento. Desarrollamos para la velocidad.",
+  tooltipIcon = "/images/velocimetro/button-tooltip.png",
+  gaugeImage = "/images/velocimetro/velocimetro.png",
+  needleImage = "/images/velocimetro/aguja.webp",
+  animationDuration = 2,
+} = Astro.props;
+---
+
+<div
+  class="gauge-section"
+  data-max-speed={maxSpeed}
+  data-animation-duration={animationDuration}
+>
+  <div
+    class="contenedor-velocimetro rounded-3xl md:rounded-4xl border-2 border-(--cz-border-color)"
+  >
+    <div class="info-velocimetro">
+      <h3>{title}</h3>
+      <button class="box-tooltip" type="button" aria-label="Más información">
+        <img src={tooltipIcon} alt="" />
+      </button>
+    </div>
+
+    <div class="tooltip">
+      <p class="paragraph-tooltip">
+        <span class="font-bold">Velocidad, UX y SEO</span>
+        <span class="font-light">{tooltipText}</span>
+      </p>
+    </div>
+
+    <div class="contador-numero">
+      <span class="counter-label">{label}</span>
+      <span class="speed-number">0</span>+
+    </div>
+
+    <img
+      src={gaugeImage}
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      class="velocimetro"
+    />
+
+    <img
+      src={needleImage}
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      class="aguja"
+    />
+  </div>
+</div>
+
+<style>
+  .gauge-section {
+    width: 100%;
+    height: 100%;
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: var(--primary-blue);
+    color: var(--light-gray);
+  }
+
+  .contenedor-velocimetro {
+    width: 100%;
+    max-width: 480px;
+    aspect-ratio: 480 / 332;
+    position: relative;
+    background: radial-gradient(
+      at -50% -75%,
+      rgba(83, 234, 253, 1) 0%,
+      rgba(0, 7, 22, 1) 50%
+    );
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 6% 4%;
+  }
+
+  @media (min-width: 760px) {
+    .contenedor-velocimetro {
+      border-radius: 32px;
+    }
+  }
+
+  .aguja {
+    position: absolute;
+    bottom: 15.6%;
+    left: 50%;
+    width: 6.66%;
+    height: auto;
+    aspect-ratio: 32 / 165;
+    transform-origin: 50% 90%;
+    transform: translateX(-50%) rotate(-90deg);
+    border-radius: 4px;
+    z-index: 10;
+    filter: drop-shadow(0.5cqi 0px 0.6cqi #000000);
+  }
+
+  .velocimetro {
+    position: absolute;
+    bottom: 3%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 87.7%;
+    height: auto;
+    aspect-ratio: 421 / 223;
+  }
+
+  .contador-numero {
+    position: absolute;
+    top: 16.5%;
+    left: 4.2%;
+    font-size: 8.3cqi;
+    font-weight: bold;
+    color: var(--fuchsia-600);
+    z-index: 20;
+  }
+
+  .counter-label {
+    color: var(--cyan-300);
+    font-size: 4.16cqi;
+    font-weight: normal;
+    margin-bottom: 0.2em;
+  }
+
+  .info-velocimetro {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: auto;
+    z-index: 50;
+  }
+
+  .info-velocimetro h3 {
+    font-size: 4.16cqi;
+    font-weight: 500;
+    color: var(--cyan-300);
+    margin: 0;
+  }
+
+  .box-tooltip {
+    height: 6.6cqi;
+    width: 6.6cqi;
+    position: relative;
+    z-index: 40;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .box-tooltip img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .tooltip {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 340px;
+    max-width: 340px;
+    white-space: normal;
+    min-height: 50px;
+    opacity: 0;
+    visibility: hidden;
+    background-color: var(--primary-blue);
+    padding: 16px;
+    border-radius: 8px;
+    border: 2px solid var(--fuchsia-600);
+    pointer-events: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    z-index: 50;
+  }
+
+  .tooltip.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+    font-size: 16px;
+  }
+
+  .tooltip span:first-child {
+    font-weight: 700;
+    color: var(--cyan-300);
+    display: block;
+  }
+
+  .paragraph-tooltip {
+    font-size: 16px;
+  }
+
+  @media (min-width: 960px) {
+    .tooltip {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: scale(0.8);
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("astro:page-load", initGauge);
+
+  async function initGauge() {
+    const { default: gsap } = await import("gsap");
+    const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const gaugeSections = document.querySelectorAll(".gauge-section");
+
+    gaugeSections.forEach((gaugeSection) => {
+      if (gaugeSection.getAttribute("data-init") === "true") return;
+      gaugeSection.setAttribute("data-init", "true");
+
+      const needle = gaugeSection.querySelector(".aguja");
+      const numberDisplay = gaugeSection.querySelector(".speed-number");
+      const box = gaugeSection.querySelector(
+        ".box-tooltip",
+      ) as HTMLElement | null;
+      const tooltip = gaugeSection.querySelector(
+        ".tooltip",
+      ) as HTMLElement | null;
+      const container = gaugeSection.querySelector(
+        ".contenedor-velocimetro",
+      ) as HTMLElement | null;
+
+      const maxSpeed = parseFloat(
+        gaugeSection.getAttribute("data-max-speed") || "90",
+      );
+      const animationDuration = parseFloat(
+        gaugeSection.getAttribute("data-animation-duration") || "2",
+      );
+
+      if (!needle || !numberDisplay) return;
+
+      const count = { value: 0 };
+
+      const tl = gsap.timeline({ paused: true });
+
+      tl.to(
+        gaugeSection,
+        {
+          opacity: 1,
+          duration: 0.5,
+        },
+        0,
+      );
+
+      const GAUGE_START_TIME = 0.5;
+
+      tl.to(
+        count,
+        {
+          value: maxSpeed,
+          roundProps: "value",
+          duration: animationDuration,
+          ease: "power2.out",
+          onUpdate: () => {
+            numberDisplay.textContent = count.value.toString();
+          },
+        },
+        GAUGE_START_TIME,
+      );
+
+      tl.to(
+        needle,
+        {
+          rotation: 86,
+          duration: animationDuration,
+          ease: "power2.out",
+        },
+        GAUGE_START_TIME,
+      );
+
+      tl.fromTo(
+        numberDisplay,
+        { scale: 1 },
+        {
+          scale: 1.1,
+          duration: 0.2,
+          yoyo: true,
+          repeat: 1,
+          ease: "power1.inOut",
+        },
+        `>-$0.5`,
+      );
+
+      ScrollTrigger.create({
+        trigger: gaugeSection,
+        start: "clamp(top 60%)",
+        toggleActions: "play none none none",
+        animation: tl,
+      });
+
+      if (box && tooltip && container) {
+        const getIsMobile = () =>
+          window.matchMedia("(max-width: 959px)").matches;
+        let isMobile = getIsMobile();
+        let cleanupEvents = () => {};
+
+        const setupEvents = () => {
+          cleanupEvents();
+          isMobile = window.matchMedia("(max-width: 959px)").matches;
+
+          if (isMobile) {
+            gsap.set(tooltip, { clearProps: "all" });
+
+            const toggleTooltip = (e: MouseEvent) => {
+              e.stopPropagation();
+              tooltip.classList.toggle("active");
+            };
+            const closeTooltip = (e: MouseEvent) => {
+              if (
+                tooltip.classList.contains("active") &&
+                !tooltip.contains(e.target as Node) &&
+                !box.contains(e.target as Node)
+              ) {
+                tooltip.classList.remove("active");
+              }
+            };
+            box.addEventListener("click", toggleTooltip);
+            document.addEventListener("click", closeTooltip);
+
+            cleanupEvents = () => {
+              box.removeEventListener("click", toggleTooltip);
+              document.removeEventListener("click", closeTooltip);
+              tooltip.classList.remove("active");
+            };
+          } else {
+            const moveTooltip = (e: MouseEvent) => {
+              const rect = container.getBoundingClientRect();
+              const mouseX = e.clientX - rect.left;
+              const mouseY = e.clientY - rect.top;
+
+              const xOffset = 20;
+              const yOffset = 20;
+
+              gsap.to(tooltip, {
+                x: mouseX + xOffset,
+                y: mouseY + yOffset,
+                opacity: 1,
+                autoAlpha: 1,
+                scale: 1,
+                duration: 0.3,
+                ease: "power2.out",
+                overwrite: "auto",
+              });
+            };
+
+            const hideTooltip = () => {
+              gsap.to(tooltip, {
+                opacity: 0,
+                autoAlpha: 0,
+                scale: 0.8,
+                duration: 0.2,
+                ease: "power2.in",
+                overwrite: "auto",
+              });
+            };
+
+            // Reset state
+            tooltip.classList.remove("active");
+            gsap.set(tooltip, {
+              x: 0,
+              y: 0,
+              opacity: 0,
+              autoAlpha: 0,
+              scale: 0.8,
+            });
+
+            // Listen on the BOX (Trigger)
+            box.addEventListener("mousemove", moveTooltip);
+            box.addEventListener("mouseleave", hideTooltip);
+
+            cleanupEvents = () => {
+              box.removeEventListener("mousemove", moveTooltip);
+              box.removeEventListener("mouseleave", hideTooltip);
+            };
+          }
+        };
+
+        setupEvents();
+
+        let resizeTimeout: ReturnType<typeof setTimeout>;
+        window.addEventListener("resize", () => {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(setupEvents, 250);
+        });
+      }
+    });
+  }
+</script> -->

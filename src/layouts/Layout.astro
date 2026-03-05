@@ -1,15 +1,128 @@
+---
+import { ClientRouter } from "astro:transitions";
+import Footer from "../sections/Footer.astro";
+import WhatsAppButton from "../components/WhatsAppButton.astro";
+import Header from "../sections/Header.astro";
+import "../styles/global.css";
+
+interface Props {
+	title: string;
+	description?: string;
+	canonical?: string;
+	robots?: string;
+}
+
+const {
+	title = "CodeZone - Desarrollo Web y Software a Medida",
+	description = "Desarrollo de páginas web, software a medida e integración de sistemas (APIs). Expertos en soluciones digitales personalizadas.",
+	canonical,
+	robots,
+} = Astro.props;
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<title>{title}</title>
+
+		<link
+			rel="icon"
+			type="image/svg+xml"
+			href="/images/codezone-logo-header.svg"
+		/>
+
+		<!-- Preload LCP hero background image -->
+		<link
+			rel="preload"
+			href="/images/bg-pages/bg-index.webp"
+			as="image"
+			fetchpriority="high"
+			transition:persist
+		/>
+
+		<!-- Preload Critical Fonts to avoid CLS -->
+		<link
+			id="font-preload-400"
+			rel="preload"
+			href="/fonts/funnel-display-v3-latin-regular.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin
+			transition:persist
+		/>
+		<link
+			id="font-preload-500"
+			rel="preload"
+			href="/fonts/funnel-display-v3-latin-500.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin
+			transition:persist
+		/>
+		<link
+			id="font-preload-600"
+			rel="preload"
+			href="/fonts/funnel-display-v3-latin-600.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin
+			transition:persist
+		/>
+
+		<!-- Meta tags optimizados para SEO -->
+		<meta name="description" content={description} />
+		{canonical && <link rel="canonical" href={canonical} />}
+		{robots && <meta name="robots" content={robots} />}
+		<meta
+			name="keywords"
+			content="desarrollo web, software a medida, APIs, integración de sistemas, CodeZone"
+		/>
+		<meta name="author" content="CodeZone" />
+
+		<!-- Open Graph -->
+		<meta
+			property="og:title"
+			content="CodeZone - Desarrollo de Software a Medida"
+		/>
+		<meta
+			property="og:description"
+			content="Desarrollo de páginas web, software a medida e integración de sistemas (APIs)."
+		/>
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://codezone.es/" />
+		<meta property="og:image" content="/images/codezone-logo-header.svg" />
+
+		<!-- Twitter Meta Tags -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta property="twitter:domain" content="codezone.es" />
+		<meta property="twitter:url" content="https://codezone.es/" />
+		<meta
+			name="twitter:title"
+			content="CodeZone - Desarrollo de Software a Medida"
+		/>
+		<meta
+			name="twitter:description"
+			content="Desarrollo de páginas web, software a medida e integración de sistemas (APIs)."
+		/>
+
+		<ClientRouter />
+
+		<script is:inline>
+			if ("scrollRestoration" in history) {
+				history.scrollRestoration = "manual";
+			}
+		</script>
 	</head>
-	<body>
-		<slot />
+	<body class="cz-background">
+		<Header />
+		<main id="main-content" class="relative z-10 w-full mx-auto">
+			<slot />
+		</main>
+		<WhatsAppButton />
+		<Footer />
 	</body>
 </html>
 
@@ -19,5 +132,26 @@
 		margin: 0;
 		width: 100%;
 		height: 100%;
+		font-family: var(--font-sans);
+		color: var(--neutral-100);
 	}
+
+	.cz-background {
+		background: var(--primary-blue);
+		background-image: var(--cz-background);
+		background-size: 140px 140px;
+	}
+
+	#main-content {
+		width: 100%;
+		min-height: 100svh;
+		margin: 0px;
+	}
+
+	@media (width >= 48rem) {
+		.cz-background {
+			background-size: 340px 340px;
+		}
+	}
+	
 </style>

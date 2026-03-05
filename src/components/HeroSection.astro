@@ -1,0 +1,50 @@
+---
+import Button from "./Button.astro";
+
+interface Props {
+    bgImage?: string;
+    title?: string;
+    description?: string;
+    ctaText?: string;
+    ctaLink?: string;
+}
+
+const { bgImage, title, description, ctaText, ctaLink } = Astro.props;
+---
+
+<section 
+    class="hero-software max-w-480 mx-auto overflow-hidden w-full rounded-b-3xl md:rounded-b-4xl"
+    style={{ backgroundImage: `url(${bgImage})` }}
+    >
+    <article
+        class="flex flex-col items-center justify-center text-center gap-5 md:gap-7 lg:gap-10 mx-auto mt-30 2xl:mt-30.5"
+    >
+       <div class="flex flex-col items-center gap-4 md:gap-2">
+         <h1 class="title-services font-medium">{title}</h1>
+        <h2 class="subtitle-services font-medium text-cyan-300">{description}</h2>
+       </div>
+        <Button href={ctaLink} variant="solid" size="small" >
+            {ctaText}
+        </Button>
+    </article>
+</section>
+
+<style>
+    .hero-software {
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        min-height: clamp(20.875rem, 19.2019rem + 7.4359vw, 28.125rem);
+        height: 100%;
+        padding-bottom: 2rem;
+    }
+    .title-services {
+        font-size: clamp(2.25rem, 1.8462rem + 1.7949vw, 4rem);
+    }
+
+    .subtitle-services {
+        font-size: clamp(1rem, 0.8846rem + 0.5128vw, 1.5rem);
+        line-height: 1.2;
+        max-width: clamp(20rem, 14.4183rem + 24.8077vw, 44.1875rem);
+    }
+</style>

@@ -1,0 +1,53 @@
+---
+import { Image } from "astro:assets";
+import Logo from "../assets/images/codezone-logo-color.svg";
+import Form from "./Form.astro";
+import Button from "./Button.astro";
+---
+   <section
+        class="max-w-(--width-max-content) mx-auto px-2 md:px-4 lg:px-6"
+    >
+        <div
+            class="form-info w-full flex flex-col justify-center items-center gap-4 md:gap-6 lg:gap-8 mb-10"
+        >
+            <div class="contact-logo max-w-sm md:max-w-lg">
+                <Image
+                    src={Logo}
+                    alt="Logo de CodeZone"
+                    width={441}
+                    height={61}
+                    loading="lazy"
+                    decoding="async"
+                    class="object-cover"
+                />
+            </div>
+            <div
+                class="contact-buttons flex flex-wrap gap-3 justify-center items-center mt-2"
+            >
+                <Button
+                    href="tel:+34691019753"
+                    variant="outline"
+                    size="small"
+                    icon="phone-icon.svg"
+                    className="flex flex-row-reverse gap-2 whitespace-nowrap"
+                    hoverColor="var(--fuchsia-600)"
+                >
+                    +34 691 019 753
+                </Button>
+
+                <Button
+                    href="mailto:info@codezone.com"
+                    variant="outline"
+                    size="small"
+                    icon="email-icon.svg"
+                    className="flex flex-row-reverse gap-2 whitespace-nowrap"
+                    hoverColor="var(--fuchsia-600)"
+                >
+                    info@codezone.com
+                </Button>
+            </div>
+        </div>
+        <div class="w-full lg:max-w-126 mx-auto">
+            <Form />
+        </div>
+   </section>

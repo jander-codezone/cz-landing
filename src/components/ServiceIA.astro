@@ -1,0 +1,99 @@
+---
+import { DATAIA } from "../data/servicesDetail";
+import GradientText from "./GradientText.astro";
+import { getImage } from "astro:assets";
+import servicesIaBg from "../assets/index/services-ia-bg.webp";
+
+const optimizedPoster = await getImage({
+    src: servicesIaBg,
+    format: "webp",
+});
+---
+
+<section
+    class="container max-w-(--width-max-content) h-full mx-auto flex flex-col-reverse lg:flex-row justify-between mt-24 md:mt-32 lg:mt-40 gap-8"
+>
+    <div
+        class="relative overflow-hidden w-full lg:w-1/2 flex flex-col justify-baseline items-baseline border-2 border-(--cz-border-color) rounded-xl gap-6 px-6 py-7"
+    >
+        <img
+            src="/images/bg-services-cards/codezone-bg-creatividad-ia.webp"
+            srcset="/images/bg-services-cards/codezone-bg-creatividad-ia.webp 1x, /images/bg-services-cards/codezone-bg-creatividad-ia.webp 2x"
+            width="376"
+            height="271"
+            alt=""
+            loading="lazy"
+            aria-hidden="true"
+            decoding="async"
+            class="absolute inset-0 w-full h-full object-cover -z-1"
+        />
+
+        <div class="flex flex-col gap-4">
+            <GradientText
+            as="h2"
+            gradient="purple-cyan"
+            className="text-3xl md:text-4xl lg:text-5xl font-medium"
+        >
+            Creatividad Potenciada con IA
+        </GradientText>
+
+        <div class="flex flex-col gap-6">
+            <p class="font-light">
+                Optimizamos nuestros procesos creativos con IA para ofrecerle
+                creatividades, videos y contenidos únicos, personalizados y
+                escalables.
+            </p>
+            <p class="font-light">¿Qué impulsamos con IA?</p>
+        </div>
+        </div>
+        <div class="flex flex-col gap-2 md:gap-4 relative z-10">
+            {
+                DATAIA.map((item) => (
+                    <div class="flex flex-row items-baseline gap-3">
+                        <div class="size-1 bg-fuchsia-600 rounded-full shadow-[0px_0px_15px_5px_rgba(200,0,222,1.00)] flex items-center justify-center">
+                            <span class="text-xs font-medium text-fuchsia-600">
+                                •
+                            </span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span
+                                class="subtitle__ia text-cyan-300 font-medium"
+                            >
+                                {item.subtitle}
+                            </span>
+                            <p
+                                class="font-light"
+                            >
+                                {item.description}
+                            </p>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+    <div
+        class="w-full lg:w-1/2 flex items-start justify-center"
+    >
+        <video
+            poster={optimizedPoster.src}
+            loop
+            muted
+            playsinline
+            preload="none"
+            class="lazy-video border-2 border-(--cz-border-color) rounded-3xl md:rounded-4xl overflow-hidden"
+        >
+            <source
+                src="/videos/codezone-video-ia-web.webm"
+                type="video/webm"
+            />
+        </video>
+    </div>
+</section>
+
+<style is:inline>
+    .subtitle__ia {
+        font-size: clamp(1.25rem, 1.0407rem + 0.9302vw, 1.5rem);
+        line-height: 1.1;
+    }
+</style>
